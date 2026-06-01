@@ -26,27 +26,20 @@ This project was initiated during the [EuroBioC26 Hackathon](https://github.com/
 
 # Motivation
 
-* Bioconductor packages
+Bioconductor has a collection of more than 2,400 open source software packages downloaded millions of times per year. They are thoroughly maintained and documented, and their quality is ensured through the use of BiocCheck. 
 
-  * > 2,400 packages (release 3.23)
-  * Million downloads per year
-  * Thoroughly documented and maintained
+This package aims to further improve Bioconductor software FAIRness, by making them usable in the command line.
 
-* Can be even better --> FAIRification
+* Findability: xxx;
+* Accessibility: allows more users to use Bioconductor packages, in a wider variety of setups;
+* Interoperability: packages can be combined as modules with other command line tools;
+* Reusability: modular components can be reused in future workflows with any workflow manager.
 
-  * Findability: 
-  * Accessibility: command line makes it usable by more users in more contexts
-  * Interoperability: combine with other command line tools not necessarily R tools
-  * Reusability: modular components to be used/reused in new workflows (nextflow, snakemake, whatever) like independent building bricks
+Package users and developers can both benefit from this setup: users can use Bioconductor tools out side of R scripts and integrate them in their own workflows, and package developers can benefit from a wider range of users. Overall, Bioconductor software can gain visibility among a larger community of bioinformaticiens. 
 
-* Use cases
-  * User: how can I use this cool package in my workflow (nextflow or else)
-  * Developer: how can my package be used and downloaded by more users
+Light weight, relies on existing packages 
 
-* Benefits / new relevant features
 
-  * Light weight, relies on existing packages 
-  * Expand usability of packages
 
 
 # How to use executables
