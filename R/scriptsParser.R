@@ -97,3 +97,203 @@ scriptParser <- function(scriptPath) {
     parsedScript
 }
 
+
+.validatePkgPath <- function(pkgPath) {
+    if (!is.character(pkgPath) || length(pkgPath) != 1L || is.na(pkgPath)) {
+        stop("`pkgPath` must be a single directory path.", call. = FALSE)
+    }
+
+    if (!dir.exists(pkgPath)) {
+        stop("`pkgPath` must point to an existing directory.", call. = FALSE)
+    }
+}
+
+
+.findScripts <- function(pkgPath) {
+    scriptsPath <- file.path(pkgPath, "exec", "scripts")
+    if (!dir.exists(scriptsPath)) {
+        stop("The package must contain an `exec/scripts` directory.",
+             call. = FALSE)
+    }
+
+    list.files(
+        scriptsPath,
+        pattern = "\\.[Rr]$",
+        full.names = TRUE
+    )
+}
+
+
+.readPackageFields <- function(pkgPath) {
+    descriptionPath <- file.path(pkgPath, "DESCRIPTION")
+    if (!file.exists(descriptionPath) || dir.exists(descriptionPath)) {
+        stop("The package must contain a `DESCRIPTION` file.", call. = FALSE)
+    }
+
+    packageFields <- tryCatch(
+        read.dcf(
+            descriptionPath,
+            fields = c("Package", "Title", "Description")
+        ),
+        error = function(error) {
+            stop(conditionMessage(error), call. = FALSE)
+        }
+    )
+    if (nrow(packageFields) != 1L || anyNA(packageFields) ||
+            any(!nzchar(trimws(packageFields)))) {
+        stop(
+            "The package `DESCRIPTION` must define Package, Title and Description fields.",
+            call. = FALSE
+        )
+    }
+
+    packageFields
+}
+
+
+.scalarField <- function(value, field) {
+    if (!is.character(value) || length(value) != 1L || is.na(value) ||
+            !nzchar(trimws(value)) || grepl("[\r\n]", value)) {
+        stop(sprintf("`%s` must be a single non-empty line.", field),
+             call. = FALSE)
+    }
+    trimws(value)
+}
+
+
+.descriptionField <- function(value) {
+    if (!is.character(value) || !length(value) || anyNA(value)) {
+        stop("`description` must contain one or more lines.",
+             call. = FALSE)
+    }
+    lines <- strsplit(paste(value, collapse = "\n"), "\n",
+                      fixed = TRUE)[[1L]]
+    lines <- sub("\r$", "", lines)
+    if (!length(lines) || !any(nzchar(trimws(lines)))) {
+        stop("`description` must contain one or more non-empty lines.",
+             call. = FALSE)
+    }
+    lines
+}
+
+
+.descriptionHeader <- function(lines) {
+    if (length(lines) == 1L) {
+        sprintf("#| description: %s", lines)
+    } else {
+        c("#| description: |", paste0("#|   ", lines))
+    }
+}
+
+
+.packageMetadata <- function(packageFields) {
+    packageName <- .scalarField(packageFields[1L, "Package"], "name")
+    if (grepl("[/\\\\]", packageName)) {
+        stop("`name` must not contain path separators.", call. = FALSE)
+    }
+    list(
+        name = packageName,
+        title = .scalarField(packageFields[1L, "Title"], "title"),
+        description = .descriptionField(packageFields[1L, "Description"])
+    )
+}
+
+
+.commandNames <- function(parsedScripts, scripts) {
+    commandNames <- vapply(
+        seq_along(parsedScripts),
+        function(index) {
+            commandName <- .extractScriptName(
+                parsedScripts[[index]]$header,
+                scripts[[index]]
+            )
+            if (is.null(commandName)) {
+                commandName <- tools::file_path_sans_ext(
+                    basename(scripts[[index]])
+                )
+            }
+            .validateScriptName(commandName, scripts[[index]])
+            commandName
+        },
+        character(1)
+    )
+    if (anyDuplicated(commandNames)) {
+        duplicatedName <- commandNames[duplicated(commandNames)][[1L]]
+        stop(
+            sprintf("Script names must be unique. Duplicated name: `%s`.",
+                    duplicatedName),
+            call. = FALSE
+        )
+    }
+    commandNames
+}
+
+
+.indent <- function(lines, size) {
+    ifelse(nzchar(lines), paste0(strrep(" ", size), lines), "")
+}
+
+
+.compileBranches <- function(parsedScripts, commandNames) {
+    unlist(
+        lapply(
+            seq_along(parsedScripts),
+            function(index) {
+                branch <- c(
+                    .indent(parsedScripts[[index]]$header, 2L),
+                    sprintf("  %s = {", commandNames[[index]]),
+                    .indent(parsedScripts[[index]]$content, 4L),
+                    paste0("  }", if (index < length(parsedScripts)) "," else "")
+                )
+                if (index < length(parsedScripts)) c(branch, "") else branch
+            }
+        ),
+        use.names = FALSE
+    )
+}
+
+
+.writeExec <- function(pkgPath, packageMetadata, branches) {
+    execPath <- file.path(pkgPath, "exec")
+    if (!dir.exists(execPath) &&
+            !dir.create(execPath, recursive = TRUE)) {
+        stop("Failed to create the package `exec` directory.", call. = FALSE)
+    }
+
+    exec <- file.path(execPath, paste0(packageMetadata$name, ".R"))
+    writeLines(
+        c(
+            "#!/usr/bin/env Rapp",
+            sprintf("#| name: %s", packageMetadata$name),
+            sprintf("#| title: %s", packageMetadata$title),
+            .descriptionHeader(packageMetadata$description),
+            "",
+            "switch(",
+            '  "",',
+            "",
+            branches,
+            ")"
+        ),
+        exec,
+        useBytes = TRUE
+    )
+
+    invisible(exec)
+}
+
+
+compileExecs <- function(pkgPath = ".") {
+    .validatePkgPath(pkgPath)
+    scripts <- .findScripts(pkgPath)
+    if (!length(scripts)) {
+        return(invisible(character()))
+    }
+
+    ## Parse every script before writing any executable
+    parsedScripts <- lapply(scripts, scriptParser)
+    packageFields <- .readPackageFields(pkgPath)
+    packageMetadata <- .packageMetadata(packageFields)
+    commandNames <- .commandNames(parsedScripts, scripts)
+    branches <- .compileBranches(parsedScripts, commandNames)
+    .writeExec(pkgPath, packageMetadata, branches)
+}
