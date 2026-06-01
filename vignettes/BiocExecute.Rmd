@@ -28,7 +28,16 @@ FAIR
 
 Use cases
 
-# How to create executable
+# How to create executables
+
+`BiocExecute` uses `Rapp` to make your package functions executable. In the
+coming sections we will show the different ways `Rapp` includes arguments to be
+called in the CLI. Note that `Rapp` by itself works with scripts in which the
+first line is defined as `#!/usr/bin/env Rapp`. You should **_NOT_** include
+this line in your scripts ! This is handled internally as it is bundled in the
+`BiocExecute` package.
+
+
 
 ## Create a script
 
@@ -39,7 +48,7 @@ Use cases
 
 ## Create a install function
 
--> Using Rapp:::install_pkg_cli_apps
+-> Using BiocExecute::install_cli that uses Rapp:::install_pkg_cli_apps
 
 ## Explain the installation process to the user
 
