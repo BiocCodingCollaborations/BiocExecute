@@ -1,3 +1,3 @@
 # BiocExecute
 
-<img src="vignettes/hex_stick.png" align="right" alt="" width="120" />
+<img src="vignettes/hex_sticker.png" align="right" alt="" width="120" />
