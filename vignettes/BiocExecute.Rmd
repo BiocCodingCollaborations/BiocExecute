@@ -1,0 +1,47 @@
+---
+title: "BiocExecute"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{BiocExecute}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(BiocExecute)
+```
+
+# Motivation
+
+FAIR
+
++ for devs
+
++ for users
+
+Use cases
+
+# How to create executable
+
+## Create a script
+
+### Exec
+
+### Describe Rapp fields (description, parameters)
+
+
+## Create a install function
+
+-> Using Rapp:::install_pkg_cli_apps
+
+## Explain the installation process to the user
+
+
+# 
