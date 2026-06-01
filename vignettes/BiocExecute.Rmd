@@ -18,15 +18,36 @@ knitr::opts_chunk$set(
 library(BiocExecute)
 ```
 
+# Commandline executables for bioconductor functions and scripts
+
+This project was initiated during the [EuroBioC26 Hackathon](https://github.com/BiocCodingCollaborations/EuroBioc2026_Hackathon).
+
+[Vision](https://github.com/BiocCodingCollaborations/EuroBioc2026_Hackathon#commandline-executables-for-bioconductor-functions-and-scripts)
+
 # Motivation
 
-FAIR
+* Bioconductor packages
 
-+ for devs
+  * > 2,400 packages (release 3.23)
+  * Million downloads per year
+  * Thoroughly documented and maintained
 
-+ for users
+* Can be even better --> FAIRification
 
-Use cases
+  * Findability: 
+  * Accessibility: command line makes it usable by more users in more contexts
+  * Interoperability: combine with other command line tools not necessarily R tools
+  * Reusability: modular components to be used/reused in new workflows (nextflow, snakemake, whatever) like independent building bricks
+
+* Use cases
+  * User: how can I use this cool package in my workflow (nextflow or else)
+  * Developer: how can my package be used and downloaded by more users
+
+* Benefits / new relevant features
+
+  * Light weight, relies on existing packages 
+  * Expand usability of packages
+
 
 # How to create executables
 
