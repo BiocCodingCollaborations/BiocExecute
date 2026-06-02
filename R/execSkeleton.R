@@ -15,10 +15,10 @@ execSkeleton <- function(path = ".") {
     scripts_dir <- file.path(exec_dir, "scripts")
     dir.create(scripts_dir, recursive = TRUE, showWarnings = FALSE)
 
+    # Pull the template
     execTemplate(scripts_dir)
-
-    # Run execCompile
-    # execCompile()
+    # Compile the exec
+    execCompile(path)
 
     message("Read Rapp docs at https://github.com/r-lib/Rapp for examples.")
     message("Install to PATH by running: execInstall()")
