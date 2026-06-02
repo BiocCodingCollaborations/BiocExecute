@@ -3,10 +3,10 @@ Title: Make package functions or workflows executable in the command line.
 Version: 0.99.0
 Authors@R:
    c(person(given = "Claire", family = "Rioualen",
-            role = c("aut"),
-            comment = c(ORCID = "0000-0002-1520-2268")),
-     person(given = "Leopold", family = "Guyot",
             role = c("aut")),
+     person(given = "Leopold", family = "Guyot",
+            role = c("aut"),
+            comment = c(ORCID = "0009-0005-2217-3855")),
      person(given = "Rasmus", family = "Hindstrom",
             role = c("aut"),
             comment = c(ORCID = "0009-0004-5731-178X")),
