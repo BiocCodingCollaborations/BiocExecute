@@ -1,4 +1,4 @@
-test_that("compileExecs creates an executable from package scripts", {
+test_that("execCompile creates an executable from package scripts", {
     pkgPath <- tempfile("BiocExecute-test-")
     dir.create(pkgPath)
     on.exit(unlink(pkgPath, recursive = TRUE), add = TRUE)
@@ -22,7 +22,7 @@ test_that("compileExecs creates an executable from package scripts", {
         file.path(scriptsPath, "from_filename.R")
     )
 
-    execPath <- compileExecs(pkgPath)
+    execPath <- execCompile(pkgPath)
     exec <- readLines(execPath)
 
     expect_equal(basename(execPath), "ExamplePackage.R")
