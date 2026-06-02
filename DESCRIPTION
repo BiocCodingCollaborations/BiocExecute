@@ -1,6 +1,6 @@
 Package: BiocExecute
 Title: Make package functions or workflows executable in the command line.
-Version: 0.0.0.9000
+Version: 0.99.0
 Authors@R:
    c(person(given = "Claire", family = "Rioualen",
             role = c("aut"),
@@ -8,7 +8,8 @@ Authors@R:
      person(given = "Leopold", family = "Guyot",
             role = c("aut")),
      person(given = "Rasmus", family = "Hindstrom",
-            role = c("aut")),
+            role = c("aut"),
+            comment = c(ORCID = "0009-0004-5731-178X")),
      person(given = "Guillaume", family = "Deflandre",
             email = "guillaume.deflandre@uclouvain.be",
             role = c("aut", "cre"),
@@ -22,9 +23,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0
 Depends:
     Rapp
-Suggests: 
+Suggests:
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0),
+    withr
 VignetteBuilder: knitr
 Imports: 
     Rapp

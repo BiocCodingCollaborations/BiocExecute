@@ -1,0 +1,33 @@
+test_that("execCompile creates an executable from package scripts", {
+    pkgPath <- tempfile("BiocExecute-test-")
+    dir.create(pkgPath)
+    on.exit(unlink(pkgPath, recursive = TRUE), add = TRUE)
+    scriptsPath <- file.path(pkgPath, "exec", "scripts")
+    dir.create(scriptsPath, recursive = TRUE)
+
+    writeLines(
+        c(
+            "Package: ExamplePackage",
+            "Title: Example package",
+            "Description: Package used to test executable compilation."
+        ),
+        file.path(pkgPath, "DESCRIPTION")
+    )
+    writeLines(
+        c("#| name: from_header", "", "x <- 1"),
+        file.path(scriptsPath, "ignored_filename.R")
+    )
+    writeLines(
+        "y <- 2",
+        file.path(scriptsPath, "from_filename.R")
+    )
+
+    execPath <- execCompile(pkgPath)
+    exec <- readLines(execPath)
+
+    expect_equal(basename(execPath), "ExamplePackage.R")
+    expect_true(file.exists(execPath))
+    expect_true(any(exec == "#| name: ExamplePackage"))
+    expect_true(any(exec == "  from_header = {"))
+    expect_true(any(exec == "  from_filename = {"))
+})
