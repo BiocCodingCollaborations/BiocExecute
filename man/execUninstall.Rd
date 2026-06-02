@@ -7,11 +7,12 @@
 execUninstall(package, destdir = NULL)
 }
 \arguments{
-\item{package}{Package names to process.}
+\item{package}{A \code{character} vector containing package names to process.}
 
-\item{destdir}{Directory containing the launchers. When \code{NULL}, Rapp
-determines the installation directory. See \code{\link[Rapp:install_pkg_cli_apps]{Rapp::install_pkg_cli_apps()}} for
-information about the defaults directories.}
+\item{destdir}{A \code{character} scalar giving the directory containing the
+launchers, or \code{NULL}. When \code{NULL}, Rapp determines the installation
+directory. See \code{\link[Rapp:install_pkg_cli_apps]{Rapp::install_pkg_cli_apps()}} for information about the
+default directories.}
 }
 \value{
 Invisibly returns the paths of launchers removed by
