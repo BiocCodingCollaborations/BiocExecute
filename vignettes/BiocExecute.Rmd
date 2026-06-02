@@ -1,5 +1,5 @@
 ---
-title: "BiocExecute: a package to use upon package building for creating executables."
+title: "BiocExecute: make package functions/workflows executable in the CLI."
 output:
     BiocStyle::html_document:
         toc_float: true
@@ -29,7 +29,9 @@ library("BiocExecute")
 This project was initiated during the [EuroBioC26
 Hackathon](https://github.com/BiocCodingCollaborations/EuroBioc2026_Hackathon).
 
-[GitHub repo](https://github.com/BiocCodingCollaborations/EuroBioc2026_Hackathon#commandline-executables-for-bioconductor-functions-and-scripts)
+If you have any questions, or want to contribute to this package, don't
+hesitate to create an issue in the [GitHub
+repo](https://github.com/BiocCodingCollaborations/EuroBioc2026_Hackathon#commandline-executables-for-bioconductor-functions-and-scripts).
 
 # Motivation
 
