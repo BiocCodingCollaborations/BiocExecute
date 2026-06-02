@@ -129,7 +129,7 @@ To create the necessary files, I use:
 
 ```{r createSkeleton, eval = FALSE}
 ## From the root directory
-exec.skeleton("./")
+skeletonCli("./")
 ```
 
 Now, my directory tree looks like this:
