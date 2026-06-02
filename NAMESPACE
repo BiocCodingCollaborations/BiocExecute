@@ -2,6 +2,6 @@
 
 export(execCompile)
 export(execInstall)
-export(execUninstall)
 export(execSkeleton)
 export(execTemplate)
+export(execUninstall)
