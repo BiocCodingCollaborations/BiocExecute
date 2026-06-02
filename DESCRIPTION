@@ -28,6 +28,7 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     withr
+    BiocStyle
 VignetteBuilder: knitr
 Imports: 
     Rapp
