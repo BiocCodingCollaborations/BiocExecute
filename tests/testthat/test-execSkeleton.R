@@ -1,9 +1,18 @@
 test_that("skeletonCli creates exec/ and exec/scripts/ directories", {
-    pkg_dir <- withr::local_tempdir()
+    pkgPath <- withr::local_tempdir()
 
-    execSkeleton(pkg_dir)
+    writeLines(
+        c(
+            "Package: ExamplePackage",
+            "Title: Example package",
+            "Description: Package used to test executable compilation."
+        ),
+        file.path(pkgPath, "DESCRIPTION")
+    )
 
-    expect_true(dir.exists(file.path(pkg_dir, "exec")))
-    expect_true(dir.exists(file.path(pkg_dir, "exec", "scripts")))
-    expect_true(file.exists(file.path(pkg_dir, "exec/scripts/base_template.R")))
+    execSkeleton(pkgPath)
+
+    expect_true(dir.exists(file.path(pkgPath, "exec")))
+    expect_true(dir.exists(file.path(pkgPath, "exec", "scripts")))
+    expect_true(file.exists(file.path(pkgPath, "exec/scripts/base_template.R")))
 })
