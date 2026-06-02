@@ -205,7 +205,6 @@ assignment they document. The most commonly used fields are:
 A minimal example script illustrates how these come together:
 
 ```r
-#!/usr/bin/env Rapp
 #| description: Count word occurrences in a file.
 
 #| description: Path to the input file.
