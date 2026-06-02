@@ -9,54 +9,79 @@
 switch(
   "",
 
-  #| name: templateCommand
-  #| title: Template Command (name is used as command)
-  #| description: Template function demonstrating all Rapp parameter
-  #|   types.
-  templateCommand = {
+  #| name: execCompile
+  #| title: Compile CLI Scripts
+  #| description: Generate executable files from the R scripts located in the exec/scripts directory.
+  execCompile = {
 
-    #| description: Required positional argument (no default).
-    #| val_type: string
-    inputFile <- NULL
-
-    #| description: Optional positional argument.
+    #| description: Path to the package root.
     #| required: false
     #| val_type: string
-    outputFile <- NULL
+    path <- "."
 
-    #| description: Character option with default value.
-    #| short: f
+    ## Execute the package function
+    BiocExecute::execCompile(
+        path = path
+    )
+  },
+
+  #| name: execInstall
+  #| title: Install CLI Executables
+  #| description: Install the compiled CLI executables to a local or system bin directory.
+  execInstall = {
+
+    #| description: Path to the package root.
+    #| required: false
     #| val_type: string
-    format <- "csv"
+    path <- "."
 
-    #| description: Numeric vector for multiple values.
-    #| short: t
-    #| val_type: float
-    thresholds <- c()
+    #| description: Destination directory for the executables (e.g., ~/.local/bin).
+    #| required: false
+    #| val_type: string
+    bin <- "~/.local/bin"
 
-    #| description: List for parsed values (integers, floats, etc.).
-    #| short: i
-    #| val_type: integer
-    indices <- list()
+    ## Execute the package function
+    BiocExecute::execInstall(
+        path = path,
+        bin = bin
+    )
+  },
 
-    #| description: Boolean switch to enable verbose output.
-    #| short: v
-    verbose <- FALSE
+  #| name: execSkeleton
+  #| title: Scaffold CLI Skeleton
+  #| description: Create the exec/ directory structure and populate it with a template.
+  execSkeleton = {
 
-    ## Example usage of the parameters
-    message("Input file: ", inputFile)
-    if (!is.null(outputFile)) {
-        message("Output file: ", outputFile)
-    }
-    message("Format: ", format)
-    if (length(thresholds) > 0) {
-        message("Thresholds: ", paste(thresholds, collapse = ", "))
-    }
-    if (length(indices) > 0) {
-        message("Indices: ", paste(indices, collapse = ", "))
-    }
-    if (verbose) {
-        message("Verbose mode enabled")
-    }
+    #| description: Path to the package root.
+    #| required: false
+    #| val_type: string
+    path <- "."
+
+    ## Execute the package function
+    BiocExecute::execSkeleton(
+        path = path
+    )
+  },
+
+  #| name: execTemplate
+  #| title: Copy CLI Template
+  #| description: Copy the BiocExecute CLI template script to a specified 
+  #|   directory.
+  execTemplate = {
+
+    #| description: Path to the scripts directory where the template will be copied.
+    #| val_type: string
+    scripts_dir <- NULL
+
+    #| description: The filename for the new template script.
+    #| required: false
+    #| val_type: string
+    name <- "base_template.R"
+
+    ## Execute the package function
+    BiocExecute::execTemplate(
+        scripts_dir = scripts_dir,
+        name = name
+    )
   }
 )
