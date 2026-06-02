@@ -15,5 +15,6 @@ execTemplate <- function(scripts_dir, name = "base_template.R") {
 
   dest_path <- file.path(scripts_dir, name)
   file.copy(template_path, dest_path, overwrite = TRUE)
+  message(sprintf("Created template file at %s", dest_path))
   invisible(dest_path)
 }
