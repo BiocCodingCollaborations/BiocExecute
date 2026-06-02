@@ -1,0 +1,33 @@
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+name: BioC-check
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  BioC-check:
+    runs-on: ubuntu-latest
+    container: bioconductor/bioconductor_docker:devel
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          options(repos = BiocManager::repositories())
+          BiocManager::install(c("rcmdcheck", "BiocCheck", "remotes"), ask = FALSE)
+          remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
+
+      - name: R CMD check
+        run: rcmdcheck::rcmdcheck(".", args = c("--no-manual", "--timings"), error_on = "error")
+        shell: Rscript {0}
+
+      - name: BiocCheck
+        run: BiocCheck::BiocCheck(getwd(), `new-package` = TRUE)
+        shell: Rscript {0}
