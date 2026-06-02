@@ -476,5 +476,7 @@ execCompile <- function(pkgPath = ".") {
     packageMetadata <- .packageMetadata(packageFields)
     commandNames <- .commandNames(parsedScripts, scripts)
     branches <- .compileBranches(parsedScripts, commandNames)
-    .writeExec(pkgPath, packageMetadata, branches)
+    exec <- .writeExec(pkgPath, packageMetadata, branches)
+    message("Generated/updated:\n  ", exec)
+    invisible(exec)
 }

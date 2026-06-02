@@ -22,7 +22,10 @@ test_that("execCompile creates an executable from package scripts", {
         file.path(scriptsPath, "from_filename.R")
     )
 
-    execPath <- execCompile(pkgPath)
+    expect_message(
+        execPath <- execCompile(pkgPath),
+        "Generated/updated:\n  .*ExamplePackage\\.R\n?$"
+    )
     exec <- readLines(execPath)
 
     expect_equal(basename(execPath), "ExamplePackage.R")
