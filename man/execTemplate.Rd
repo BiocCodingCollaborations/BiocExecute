@@ -8,6 +8,8 @@ execTemplate(scripts_dir, name = "base_template.R")
 }
 \arguments{
 \item{scripts_dir}{Path to the scripts directory.}
+
+\item{name}{Name of the template script, defaults to "base_template"}
 }
 \value{
 Invisibly, the path to the created template script.
