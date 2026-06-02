@@ -7,15 +7,19 @@
 execInstall(package, destdir = NULL, lib.loc = NULL, overwrite = NA)
 }
 \arguments{
-\item{package}{Package names to process.}
+\item{package}{A \code{character} vector containing package names to process.}
 
-\item{destdir}{Directory where launchers are written. When \code{NULL}, Rapp
-determines the installation directory. See \code{\link[Rapp:install_pkg_cli_apps]{Rapp::install_pkg_cli_apps()}} for
-information about the defaults directories.}
+\item{destdir}{A \code{character} scalar giving the directory where launchers are
+written, or \code{NULL}. When \code{NULL}, Rapp determines the installation directory.
+See \code{\link[Rapp:install_pkg_cli_apps]{Rapp::install_pkg_cli_apps()}} for information about the default
+directories.}
 
-\item{lib.loc}{Additional library paths used to locate installed packages.}
+\item{lib.loc}{A \code{character} vector containing additional library paths used to
+locate installed packages, or \code{NULL}.}
 
-\item{overwrite}{Whether existing launchers should be replaced.}
+\item{overwrite}{A \code{logical} scalar indicating whether existing launchers
+should be replaced. Use \code{NA} to let Rapp prompt interactively and otherwise
+skip existing non-Rapp executables.}
 }
 \value{
 Invisibly returns the paths of launchers written by
