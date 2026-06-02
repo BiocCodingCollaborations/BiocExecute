@@ -1,6 +1,8 @@
 #' Copy the CLI template to the scripts directory
 #'
 #' @param scripts_dir Path to the scripts directory.
+#' 
+#' @param name Name of the template script, defaults to "base_template"
 #'
 #' @return Invisibly, the path to the created template script.
 #' @export

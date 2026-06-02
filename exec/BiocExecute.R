@@ -52,5 +52,121 @@ switch(
     if (bye) {
         message("Bye bye now, ", name)
     }
+  },
+
+  #| name: execCompile
+  #| title: Compile CLI Scripts
+  #| description: Generate executable files from the R scripts located in the exec/scripts directory.
+  execCompile = {
+
+    #| description: Path to the package root.
+    #| required: false
+    #| val_type: string
+    #| short: p
+    path <- "."
+
+    ## Execute the package function
+    BiocExecute::execCompile(
+        pkgPath = path
+    )
+  },
+
+  #| name: execInstall
+  #| title: Install CLI Executables
+  #| description: Install the compiled CLI executables to a local or system bin directory.
+  execInstall = {
+
+    #| description: Package names to install.
+    #| val_type: string
+    #| short: p
+    package <- NULL
+
+    #| description: Destination directory for the executables, auto-detected when not set.
+    #| required: false
+    #| val_type: string
+    #| short: d
+    destdir <- NULL
+
+    #| description: Additional library paths used to locate installed packages.
+    #| required: false
+    #| val_type: string
+    #| short: l
+    lib.loc <- NULL
+
+    #| description: Overwrite existing launchers.
+    #| required: false
+    #| short: o
+    overwrite <- FALSE
+
+    ## Execute the package function
+    BiocExecute::execInstall(
+        package = package,
+        destdir = destdir,
+        lib.loc = lib.loc,
+        overwrite = overwrite
+    )
+  },
+
+  #| name: execSkeleton
+  #| title: Scaffold CLI Skeleton
+  #| description: Create the exec/ directory structure and populate it with a template.
+  execSkeleton = {
+
+    #| description: Path to the package root.
+    #| required: false
+    #| val_type: string
+    #| short: p
+    path <- "."
+
+    ## Execute the package function
+    BiocExecute::execSkeleton(
+        path = path
+    )
+  },
+
+  #| name: execTemplate
+  #| title: Copy CLI Template
+  #| description: Copy the CLI template to the scripts directory.
+  execTemplate = {
+
+    #| description: Path to the scripts directory.
+    #| val_type: string
+    #| short: d
+    scripts_dir <- NULL
+
+    #| description: Name of the template script, defaults to "base_template".
+    #| required: false
+    #| val_type: string
+    #| short: n
+    name <- "base_template.R"
+
+    ## Execute the package function
+    BiocExecute::execTemplate(
+        scripts_dir = scripts_dir,
+        name = name
+    )
+  },
+
+  #| name: execUninstall
+  #| title: Uninstall CLI Executables
+  #| description: Uninstall the compiled CLI executables from a local or system bin directory.
+  execUninstall = {
+
+    #| description: Package names to uninstall.
+    #| val_type: string
+    #| short: p
+    package <- NULL
+
+    #| description: Directory containing the launchers, auto-detected when not set.
+    #| required: false
+    #| val_type: string
+    #| short: d
+    destdir <- NULL
+
+    ## Execute the package function
+    BiocExecute::execUninstall(
+        package = package,
+        destdir = destdir
+    )
   }
 )
