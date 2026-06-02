@@ -65,15 +65,14 @@ switch(
 
   #| name: execTemplate
   #| title: Copy CLI Template
-  #| description: Copy the BiocExecute CLI template script to a specified 
-  #|   directory.
+  #| description: Copy the CLI template to the scripts directory.
   execTemplate = {
 
-    #| description: Path to the scripts directory where the template will be copied.
+    #| description: Path to the scripts directory.
     #| val_type: string
     scripts_dir <- NULL
 
-    #| description: The filename for the new template script.
+    #| description: Name of the template script, defaults to "base_template".
     #| required: false
     #| val_type: string
     name <- "base_template.R"
