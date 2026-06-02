@@ -1,11 +1,28 @@
 .scriptNamePattern <- "^#\\|[[:space:]]*name:[[:space:]]*(.*)$"
 
 
+#' Stop with a script-specific error
+#'
+#' @param scriptPath A path identifying the script that caused the error.
+#' @param message The error message.
+#'
+#' @return This function does not return anything.
+#'
+#' @keywords internal
+#' @noRd
 .stopScript <- function(scriptPath, message) {
     stop(sprintf("%s Script: `%s`", message, scriptPath), call. = FALSE)
 }
 
 
+#' Validate a script path
+#'
+#' @param scriptPath A path to an R script.
+#'
+#' @return Invisibly returns `NULL` when the path is valid.
+#'
+#' @keywords internal
+#' @noRd
 .validateScriptPath <- function(scriptPath) {
     if (!is.character(scriptPath) || length(scriptPath) != 1L ||
             is.na(scriptPath)) {
@@ -18,6 +35,14 @@
 }
 
 
+#' Read a BiocExecute script
+#'
+#' @param scriptPath A path to an R script.
+#'
+#' @return A character vector containing the script lines.
+#'
+#' @keywords internal
+#' @noRd
 .readScript <- function(scriptPath) {
     script <- tryCatch(
         readLines(scriptPath, warn = FALSE),
@@ -38,6 +63,14 @@
 }
 
 
+#' Split a script into its header and content
+#'
+#' @param script A character vector containing the script lines.
+#'
+#' @return A list with `header` and `content` elements.
+#'
+#' @keywords internal
+#' @noRd
 .splitScript <- function(script) {
     headerEnd <- match(FALSE, grepl("^#\\|", script),
                        nomatch = length(script) + 1L) - 1L
@@ -57,6 +90,15 @@
 }
 
 
+#' Extract a script name from a header
+#'
+#' @param header A character vector containing Rapp annotation lines.
+#' @param scriptPath A path identifying the parsed script.
+#'
+#' @return The script name, or `NULL` when the header has no `name` field.
+#'
+#' @keywords internal
+#' @noRd
 .extractScriptName <- function(header, scriptPath) {
     nameLines <- grep(.scriptNamePattern, header, value = TRUE)
     if (length(nameLines) > 1L) {
@@ -73,6 +115,15 @@
 }
 
 
+#' Validate a script name
+#'
+#' @param scriptName The script name to validate.
+#' @param scriptPath A path identifying the parsed script.
+#'
+#' @return Invisibly returns `NULL` when the name is valid.
+#'
+#' @keywords internal
+#' @noRd
 .validateScriptName <- function(scriptName, scriptPath) {
     if (!nzchar(scriptName) || !identical(make.names(scriptName), scriptName)) {
         .stopScript(scriptPath, "The script name must be a valid R object name.")
@@ -80,6 +131,32 @@
 }
 
 
+#' Parse a BiocExecute script
+#'
+#' Read an R script and separate its optional Rapp annotation header from its
+#' executable content.
+#'
+#' The header consists of consecutive `#|` annotation lines at the beginning
+#' of the file. It may contain a `name` field, but this field is optional. When
+#' present, the name must be defined only once and must be a valid R object
+#' name. A script must not start with a `#!` header because the compiled
+#' executable provides its own Rapp shebang.
+#'
+#' @param scriptPath A path to the R script to parse.
+#'
+#' @return A list with two character-vector elements:
+#' \describe{
+#'   \item{header}{The optional leading `#|` annotation lines.}
+#'   \item{content}{The remaining script lines, preserved unchanged.}
+#' }
+#'
+#' @examples
+#' script <- tempfile(fileext = ".R")
+#' writeLines(c("#| name: example", "", "value <- 1"), script)
+#' scriptParser(script)
+#' unlink(script)
+#'
+#' @export
 scriptParser <- function(scriptPath) {
     ## Check that the input is a readable script
     .validateScriptPath(scriptPath)
@@ -98,6 +175,14 @@ scriptParser <- function(scriptPath) {
 }
 
 
+#' Validate a package path
+#'
+#' @param pkgPath A path to an R package directory.
+#'
+#' @return Invisibly returns `NULL` when the path is valid.
+#'
+#' @keywords internal
+#' @noRd
 .validatePkgPath <- function(pkgPath) {
     if (!is.character(pkgPath) || length(pkgPath) != 1L || is.na(pkgPath)) {
         stop("`pkgPath` must be a single directory path.", call. = FALSE)
@@ -109,6 +194,14 @@ scriptParser <- function(scriptPath) {
 }
 
 
+#' Find package scripts
+#'
+#' @param pkgPath A path to an R package directory.
+#'
+#' @return A character vector containing paths to the R scripts.
+#'
+#' @keywords internal
+#' @noRd
 .findScripts <- function(pkgPath) {
     scriptsPath <- file.path(pkgPath, "exec", "scripts")
     if (!dir.exists(scriptsPath)) {
@@ -124,6 +217,14 @@ scriptParser <- function(scriptPath) {
 }
 
 
+#' Read package metadata fields
+#'
+#' @param pkgPath A path to an R package directory.
+#'
+#' @return A character matrix containing the package, title, and description.
+#'
+#' @keywords internal
+#' @noRd
 .readPackageFields <- function(pkgPath) {
     descriptionPath <- file.path(pkgPath, "DESCRIPTION")
     if (!file.exists(descriptionPath) || dir.exists(descriptionPath)) {
@@ -151,6 +252,15 @@ scriptParser <- function(scriptPath) {
 }
 
 
+#' Validate and normalize a scalar metadata field
+#'
+#' @param value The metadata field value.
+#' @param field The field name to include in error messages.
+#'
+#' @return A trimmed character scalar.
+#'
+#' @keywords internal
+#' @noRd
 .scalarField <- function(value, field) {
     if (!is.character(value) || length(value) != 1L || is.na(value) ||
             !nzchar(trimws(value)) || grepl("[\r\n]", value)) {
@@ -161,6 +271,14 @@ scriptParser <- function(scriptPath) {
 }
 
 
+#' Normalize a package description
+#'
+#' @param value The package description.
+#'
+#' @return A character vector containing the description lines.
+#'
+#' @keywords internal
+#' @noRd
 .descriptionField <- function(value) {
     if (!is.character(value) || !length(value) || anyNA(value)) {
         stop("`description` must contain one or more lines.",
@@ -177,6 +295,14 @@ scriptParser <- function(scriptPath) {
 }
 
 
+#' Format a description as Rapp annotations
+#'
+#' @param lines A character vector containing description lines.
+#'
+#' @return A character vector containing `#| description` annotation lines.
+#'
+#' @keywords internal
+#' @noRd
 .descriptionHeader <- function(lines) {
     if (length(lines) == 1L) {
         sprintf("#| description: %s", lines)
@@ -186,6 +312,14 @@ scriptParser <- function(scriptPath) {
 }
 
 
+#' Normalize package metadata
+#'
+#' @param packageFields A character matrix returned by `.readPackageFields()`.
+#'
+#' @return A list containing the package `name`, `title`, and `description`.
+#'
+#' @keywords internal
+#' @noRd
 .packageMetadata <- function(packageFields) {
     packageName <- .scalarField(packageFields[1L, "Package"], "name")
     if (grepl("[/\\\\]", packageName)) {
@@ -199,6 +333,15 @@ scriptParser <- function(scriptPath) {
 }
 
 
+#' Determine compiled command names
+#'
+#' @param parsedScripts A list of parsed scripts.
+#' @param scripts A character vector containing the corresponding script paths.
+#'
+#' @return A character vector containing unique, valid R object names.
+#'
+#' @keywords internal
+#' @noRd
 .commandNames <- function(parsedScripts, scripts) {
     commandNames <- vapply(
         seq_along(parsedScripts),
@@ -229,11 +372,29 @@ scriptParser <- function(scriptPath) {
 }
 
 
+#' Indent non-empty lines
+#'
+#' @param lines A character vector containing text lines.
+#' @param size The number of spaces to prepend.
+#'
+#' @return The indented character vector.
+#'
+#' @keywords internal
+#' @noRd
 .indent <- function(lines, size) {
     ifelse(nzchar(lines), paste0(strrep(" ", size), lines), "")
 }
 
 
+#' Compile script switch branches
+#'
+#' @param parsedScripts A list of parsed scripts.
+#' @param commandNames A character vector containing command names.
+#'
+#' @return A character vector containing the formatted switch branches.
+#'
+#' @keywords internal
+#' @noRd
 .compileBranches <- function(parsedScripts, commandNames) {
     unlist(
         lapply(
@@ -253,6 +414,16 @@ scriptParser <- function(scriptPath) {
 }
 
 
+#' Write a compiled executable
+#'
+#' @param pkgPath A path to an R package directory.
+#' @param packageMetadata A list containing package metadata.
+#' @param branches A character vector containing formatted switch branches.
+#'
+#' @return Invisibly returns the path to the generated executable.
+#'
+#' @keywords internal
+#' @noRd
 .writeExec <- function(pkgPath, packageMetadata, branches) {
     execPath <- file.path(pkgPath, "exec")
     if (!dir.exists(execPath) &&
@@ -282,6 +453,33 @@ scriptParser <- function(scriptPath) {
 }
 
 
+#' Compile package scripts into a Rapp executable
+#'
+#' Collect the R scripts stored in a package's `exec/scripts` directory and
+#' combine them into one Rapp executable containing a `switch()` entry for each
+#' script.
+#'
+#' The generated executable metadata is read from the package `DESCRIPTION`
+#' file. For each script, the switch entry uses the optional `#| name:` header
+#' field when present. Otherwise, it uses the script filename without its
+#' extension. Every resulting command name must be unique and must be a valid R
+#' object name.
+#'
+#' The resulting file is written to `exec/<Package>.R`, where `<Package>` is
+#' the package name from `DESCRIPTION`. File permissions are left unchanged.
+#'
+#' @param pkgPath A path to the R package directory. Defaults to the current
+#' directory.
+#'
+#' @return Invisibly returns the path to the generated executable. Returns
+#' `character()` invisibly when `exec/scripts` contains no R scripts.
+#'
+#' @examples
+#' \dontrun{
+#' compileExecs(".")
+#' }
+#'
+#' @export
 compileExecs <- function(pkgPath = ".") {
     .validatePkgPath(pkgPath)
     scripts <- .findScripts(pkgPath)
