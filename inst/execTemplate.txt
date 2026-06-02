@@ -1,5 +1,5 @@
 #| name: templateCommand
-#| title: Template Command
+#| title: Template Command (name is used as command)
 #| description: Template function demonstrating all Rapp parameter
 #|   types.
 
