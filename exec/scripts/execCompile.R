@@ -10,5 +10,5 @@ path <- "."
 
 ## Execute the package function
 BiocExecute::execCompile(
-    path = path
+    pkgPath = path
 )
