@@ -1,6 +1,6 @@
 Package: BiocExecute
 Title: Make package functions or workflows executable in the command line.
-Version: 0.0.1
+Version: 0.99.0
 Authors@R:
    c(person(given = "Claire", family = "Rioualen",
             role = c("aut"),
