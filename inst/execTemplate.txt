@@ -5,44 +5,38 @@
 
 #| description: Required positional argument (no default).
 #| val_type: string
-inputFile <- NULL
+#| short: n
+name <- NULL
 
-#| description: Optional positional argument.
+#| description: Optional boolean switch to enable verbose output.
 #| required: false
 #| val_type: string
-outputFile <- NULL
+#| short: b
+bye <- TRUE
 
 #| description: Character option with default value.
 #| short: f
 #| val_type: string
-format <- "csv"
+organ <- "Bioconductor"
 
 #| description: Numeric vector for multiple values.
-#| short: t
 #| val_type: float
-thresholds <- c()
+#| short: c
+count <- c()
 
 #| description: List for parsed values (integers, floats, etc.).
 #| short: i
 #| val_type: integer
 indices <- list()
 
-#| description: Boolean switch to enable verbose output.
-#| short: v
-verbose <- FALSE
-
 ## Example usage of the parameters
-message("Input file: ", inputFile)
-if (!is.null(outputFile)) {
-    message("Output file: ", outputFile)
-}
-message("Format: ", format)
-if (length(thresholds) > 0) {
-    message("Thresholds: ", paste(thresholds, collapse = ", "))
-}
+message("Hi ", name, " !")
+message("The ", organ, " team is the best !")
+message("Ready ? ", count, " ...")
 if (length(indices) > 0) {
-    message("Indices: ", paste(indices, collapse = ", "))
+    message("These members especially: ", paste(indices, collapse = ", "))
 }
-if (verbose) {
-    message("Verbose mode enabled")
+
+if (bye) {
+    message("Bye bye now, ", name)
 }
