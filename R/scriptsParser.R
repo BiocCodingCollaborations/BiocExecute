@@ -133,31 +133,13 @@
 
 #' Parse a BiocExecute script
 #'
-#' Read an R script and separate its optional Rapp annotation header from its
-#' executable content.
-#'
-#' The header consists of consecutive `#|` annotation lines at the beginning
-#' of the file. It may contain a `name` field, but this field is optional. When
-#' present, the name must be defined only once and must be a valid R object
-#' name. A script must not start with a `#!` header because the compiled
-#' executable provides its own Rapp shebang.
-#'
 #' @param scriptPath A path to the R script to parse.
 #'
-#' @return A list with two character-vector elements:
-#' \describe{
-#'   \item{header}{The optional leading `#|` annotation lines.}
-#'   \item{content}{The remaining script lines, preserved unchanged.}
-#' }
+#' @return A list containing the optional Rapp `header` and script `content`.
 #'
-#' @examples
-#' script <- tempfile(fileext = ".R")
-#' writeLines(c("#| name: example", "", "value <- 1"), script)
-#' scriptParser(script)
-#' unlink(script)
-#'
-#' @export
-scriptParser <- function(scriptPath) {
+#' @keywords internal
+#' @noRd
+.scriptParser <- function(scriptPath) {
     ## Check that the input is a readable script
     .validateScriptPath(scriptPath)
     script <- .readScript(scriptPath)
@@ -488,7 +470,7 @@ compileExecs <- function(pkgPath = ".") {
     }
 
     ## Parse every script before writing any executable
-    parsedScripts <- lapply(scripts, scriptParser)
+    parsedScripts <- lapply(scripts, .scriptParser)
     packageFields <- .readPackageFields(pkgPath)
     packageMetadata <- .packageMetadata(packageFields)
     commandNames <- .commandNames(parsedScripts, scripts)
