@@ -3,4 +3,5 @@
 export(execCompile)
 export(execInstall)
 export(execUninstall)
-export(skeletonCli)
+export(execSkeleton)
+export(execTemplate)

@@ -1,24 +1,62 @@
 #!/usr/bin/env Rapp
 #| name: BiocExecute
-#| title: Replace with a short title
+#| title: Make package functions or workflows executable in the command line.
 #| description: |
-#|   Replace with a description of what this tool does.
+#|   The BiocExecute package should be used by a package maintainer
+#|   that wants to make his/her package functions and/or workflows executable in
+#|   the command line.
 
-#| description: Input .rds file
-input <- NULL
+switch(
+  "",
 
-#| description: Output .rds file path
-output <- NULL
+  #| name: templateCommand
+  #| title: Template Command (name is used as command)
+  #| description: Template function demonstrating all Rapp parameter
+  #|   types.
+  templateCommand = {
 
-library(BiocExecute)
+    #| description: Required positional argument (no default).
+    #| val_type: string
+    inputFile <- NULL
 
-obj <- readRDS(input)
+    #| description: Optional positional argument.
+    #| required: false
+    #| val_type: string
+    outputFile <- NULL
 
-# Implement workflow
-# --OR--
-# Write sub scripts into exec/scripts/
-#   and call the compiler function
-obj <- foo(bar(obj))
+    #| description: Character option with default value.
+    #| short: f
+    #| val_type: string
+    format <- "csv"
 
-saveRDS(obj, output)
-message("Done. Saved to: ", output)
+    #| description: Numeric vector for multiple values.
+    #| short: t
+    #| val_type: float
+    thresholds <- c()
+
+    #| description: List for parsed values (integers, floats, etc.).
+    #| short: i
+    #| val_type: integer
+    indices <- list()
+
+    #| description: Boolean switch to enable verbose output.
+    #| short: v
+    verbose <- FALSE
+
+    ## Example usage of the parameters
+    message("Input file: ", inputFile)
+    if (!is.null(outputFile)) {
+        message("Output file: ", outputFile)
+    }
+    message("Format: ", format)
+    if (length(thresholds) > 0) {
+        message("Thresholds: ", paste(thresholds, collapse = ", "))
+    }
+    if (length(indices) > 0) {
+        message("Indices: ", paste(indices, collapse = ", "))
+    }
+    if (verbose) {
+        message("Verbose mode enabled")
+    }
+  }
+)
