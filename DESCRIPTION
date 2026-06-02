@@ -1,14 +1,26 @@
 Package: BiocExecute
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+Authors@R:
+   c(person(given = "Claire", family = "Rioualen",
+            role = c("aut", "cre"),
+            comment = c(ORCID = "0000-0002-1520-2268")),
+     person(given = "Leopold", family = "Guyot",
+            role = c("aut", "cre")),
+     person(given = "Rasmus", family = "Hindstrom",
+            role = c("aut", "cre")),
+     person(given = "Guillaume", family = "Deflandre",
+            email = "guillaume.deflandre@uclouvain.be",
+            role = c("aut", "cre"),
+            comment = c(ORCID = "0009-0008-1257-2416")))
 Description: What the package does (one paragraph).
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0
+Depends:
+    Rapp
 Suggests: 
     knitr,
     rmarkdown

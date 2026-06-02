@@ -1,21 +1,27 @@
 ---
-title: "BiocExecute"
-output: rmarkdown::html_vignette
+title: "BiocExecute: a package to use upon package building for creating executables."
+output:
+    BiocStyle::html_document:
+        toc_float: true
 vignette: >
-  %\VignetteIndexEntry{BiocExecute}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{BiocExecute}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+    %\VignettePackage{BiocExecute}
+    %\VignetteDepends{Rapp}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+```{r style, echo = FALSE, results = 'asis', message=FALSE}
+BiocStyle::markdown()
 ```
 
-```{r setup}
-library(BiocExecute)
+**Package**: `r Biocpkg("BiocExecute")`<br />
+**Authors**: `r packageDescription("BiocExecute")[["Author"]] `<br />
+**Last modified:** `r file.info("validatePSM.Rmd")$mtime`<br />
+**Compiled**: `r date()`
+
+```{r setup, message = FALSE, echo = FALSE}
+library("BiocExecute")
 ```
 
 # Commandline executables for bioconductor functions and scripts
@@ -128,7 +134,7 @@ exec.skeleton("./")
 
 Now, my directory tree looks like this:
 
-```{r tree, eval = FALSE}
+```{r tree2, eval = FALSE}
 mypkg
 │   README.md
 │   DESCRIPTION    
