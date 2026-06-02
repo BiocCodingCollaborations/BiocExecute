@@ -7,7 +7,7 @@ Authors@R:
      person(given = "Leopold", family = "Guyot",
             role = c("aut"),
             comment = c(ORCID = "0009-0005-2217-3855")),
-     person(given = "Rasmus", family = "Hindstrom",
+     person(given = "Rasmus", family = "Hindström",
             role = c("aut"),
             comment = c(ORCID = "0009-0004-5731-178X")),
      person(given = "Guillaume", family = "Deflandre",
@@ -17,6 +17,9 @@ Authors@R:
 Description: The BiocExecute package should be used by a package maintainer
     that wants to make his/her package functions and/or workflows executable in
     the command line.
+URL: https://github.com/BiocCodingCollaborations/BiocExecute
+BugReports: https://github.com/BiocCodingCollaborations/BiocExecute/issues
+biocViews: WorkflowManagement, Infrastructure
 License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
