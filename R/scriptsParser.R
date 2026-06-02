@@ -458,11 +458,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' compileExecs(".")
+#' execCompile(".")
 #' }
 #'
 #' @export
-compileExecs <- function(pkgPath = ".") {
+execCompile <- function(pkgPath = ".") {
     .validatePkgPath(pkgPath)
     scripts <- .findScripts(pkgPath)
     if (!length(scripts)) {
