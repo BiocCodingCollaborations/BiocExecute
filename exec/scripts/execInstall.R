@@ -5,11 +5,13 @@
 #| description: Path to the package root.
 #| required: false
 #| val_type: string
+#| short: p
 path <- "."
 
 #| description: Destination directory for the executables (e.g., ~/.local/bin).
 #| required: false
 #| val_type: string
+#| short: b
 bin <- "~/.local/bin"
 
 ## Execute the package function

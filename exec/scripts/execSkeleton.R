@@ -5,6 +5,7 @@
 #| description: Path to the package root.
 #| required: false
 #| val_type: string
+#| short: p
 path <- "."
 
 ## Execute the package function
